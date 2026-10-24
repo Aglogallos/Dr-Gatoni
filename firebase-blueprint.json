@@ -1,0 +1,170 @@
+{
+  "entities": {
+    "student": {
+      "title": "Student Profile",
+      "description": "Information about a registered student or instructor",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth User UID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Student's full name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Student's email address"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "instructor"],
+          "description": "User role: student or instructor"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Profile creation timestamp"
+        },
+        "passwordPlain": {
+          "type": "string",
+          "description": "Plain text password stored for recovery by instructor"
+        }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "question": {
+      "title": "Exam Question",
+      "description": "An exam question created by an instructor or seeded",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique question ID"
+        },
+        "subject": {
+          "type": "string",
+          "enum": ["biology", "biochemistry", "physics"],
+          "description": "The subject category of the question"
+        },
+        "text": {
+          "type": "string",
+          "description": "The question text in Greek"
+        },
+        "options": {
+          "type": "array",
+          "description": "The four multiple choice options"
+        },
+        "correctOptionIndex": {
+          "type": "integer",
+          "description": "Index of the correct option (0-3)"
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Explanation of the correct answer"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Optional illustration image URL"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "UID of the instructor who created this"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "subject", "text", "options", "correctOptionIndex", "explanation"]
+    },
+    "progress": {
+      "title": "Student Progress",
+      "description": "Smart repetition progress details for a specific question",
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string"
+        },
+        "studentId": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": ["new", "learning", "review"]
+        },
+        "ease": {
+          "type": "number"
+        },
+        "interval": {
+          "type": "number"
+        },
+        "nextReviewDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastReviewed": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "wrongCount": {
+          "type": "integer"
+        },
+        "correctCount": {
+          "type": "integer"
+        },
+        "lastWrongAnswerIndex": {
+          "type": "integer"
+        },
+        "lastWrongTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["questionId", "studentId", "subject", "state", "ease", "interval", "nextReviewDate"]
+    },
+    "theoryProgress": {
+      "title": "Student Theory Progress",
+      "description": "Theory reading completion log per unit",
+      "type": "object",
+      "properties": {
+        "unitId": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["unitId", "subject", "completed", "completedAt"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "student",
+      "description": "Registered students and instructors profiles"
+    },
+    "/questions/{questionId}": {
+      "schema": "question",
+      "description": "Exam questions bank"
+    },
+    "/students/{studentId}/progress/{questionId}": {
+      "schema": "progress",
+      "description": "Smart repetition question tracking and incorrect history for a specific student"
+    },
+    "/students/{studentId}/theoryProgress/{unitId}": {
+      "schema": "theoryProgress",
+      "description": "Theory study completion records per unit"
+    }
+  }
+}

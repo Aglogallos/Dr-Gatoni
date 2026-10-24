@@ -1,0 +1,6 @@
+{
+  "name": "Greek Med Entry Exam Prep",
+  "description": "An Anki-like flashcard and question prep application for students studying Biology, Biochemistry, and Medical Physics for Greek medical school entry exams.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
